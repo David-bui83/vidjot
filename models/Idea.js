@@ -1,0 +1,13 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+// Create Schema
+const IdeaSchema = new Schema({
+  title:{type: String, required: true},
+  date:{type: String, required: true},
+  date:{type: Date, default: Date.now}
+});
+
+
+// Create model and connect it to schema
+mongoose.model('ideas', IdeaSchema)
