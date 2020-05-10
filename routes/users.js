@@ -19,6 +19,15 @@ router.get('/register', (req, res) => {
   res.render('users/register');
 });
 
+// Login Form POST
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/ideas',
+    failureRedirect: '/users/login',
+    failureFlash: true
+  })(req, res, next);
+});
+
 // Register Form POST
 router.post('/register', (req, res) => {
   let errors = [];
@@ -32,6 +41,7 @@ router.post('/register', (req, res) => {
   };
   
   if(errors.length > 0){
+
     res.render('users/register', {
       errors: errors,
       name: req.body.name,
@@ -39,6 +49,7 @@ router.post('/register', (req, res) => {
       password: req.body.password,
       password2: req.body.password2
     });
+
   }else{
     User.findOne({email: req.body.email})
     .then(user => {
