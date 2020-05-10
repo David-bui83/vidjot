@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
@@ -7,7 +8,6 @@ const bodyParser = require('body-parser') ;
 const mongoose = require('mongoose');
 const app = express();
 const port = 7000;
-
 
 // Load routes
 const ideas = require('./routes/ideas');
@@ -21,7 +21,6 @@ mongoose.connect('mongodb://localhost/vidjot-dev', {useNewUrlParser: true, useUn
 .then(() => {console.log('MongoDB connected...')})
 .catch(err => console.log(err));
 
-
 // Handlebars Middleware
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -29,6 +28,9 @@ app.set('view engine', 'handlebars');
 // Body Parser middleware
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(bodyParser.json());
+
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Methodoverride middleware
 app.use(methodOverride('_method'));
