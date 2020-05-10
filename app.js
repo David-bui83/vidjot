@@ -116,5 +116,15 @@ app.put('/ideas/:id', (req, res) => {
   });
 });
 
+// Delete Idea
+app.delete('/ideas/:id', (req, res) => {
+  console.log('delete idea route')
+  console.log(req.params.id)
+  Idea.deleteOne({_id:req.params.id})
+  .then(() => {
+    res.redirect('/ideas');
+  });
+});
+
 // Console log port
 app.listen(port, () => console.log(`Server started on port ${port}`));
