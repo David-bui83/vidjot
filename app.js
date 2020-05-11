@@ -8,17 +8,23 @@ const bodyParser = require('body-parser') ;
 const mongoose = require('mongoose');
 const passport = require('passport');
 const app = express();
-const port = process.env.port || 7000;
+const port = process.env.PORT || 5000;
 
 // Load routes
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
 
+// Passport Config
+require('./config/passport')(passport);
+
+// DB Config
+const db = require('./config/database');
+
 // // Map global promise - get rid of warning
 // mongoose.Promise = global.Promise;
 
 // Connect to mongoose
-mongoose.connect('mongodb://localhost/vidjot-dev', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(db.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {console.log('MongoDB connected...')})
 .catch(err => console.log(err));
 
@@ -74,9 +80,6 @@ app.get('/about', (req, res) => {
 // Use routes
 app.use('/ideas', ideas);
 app.use('/users', users);
-
-// Passport Config
-require('./config/passport')(passport);
 
 // Console log port
 app.listen(port, () => console.log(`Server started on port ${port}`));
